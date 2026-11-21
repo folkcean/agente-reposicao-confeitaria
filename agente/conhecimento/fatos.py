@@ -21,6 +21,7 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import Any
 
+
 class FatoJaExisteErro(Exception):
     """Lançada quando se tenta afirmar um fato que já está na memória."""
 
@@ -28,6 +29,7 @@ class FatoJaExisteErro(Exception):
 @dataclass(frozen=True)
 class Fato:
     """Uma afirmação sobre o ingrediente avaliado."""
+
     nome: str
     valor: Any
     origem: str
@@ -43,8 +45,9 @@ class MemoriaDeTrabalho:
     def afirmar(self, nome: str, valor: Any, origem: str, dependencias: tuple[str, ...] = ()) -> Fato:
         """Acrescenta um fato novo (operação TELL de Russell e Norvig)."""
         if nome in self._fatos:
+            valor_existente = self._fatos[nome].valor
             raise FatoJaExisteErro(
-                f"O fato '{nome}' já existe (valor {self._fatos[nome].valor!r}); "
+                f"O fato '{nome}' já existe (valor {valor_existente!r}); "
                 f"nenhuma regra pode alterá-lo."
             )
         fato = Fato(nome, valor, origem, tuple(dependencias))
@@ -56,15 +59,19 @@ class MemoriaDeTrabalho:
 
     def __getitem__(self, nome: str) -> Any:
         """Valor de um fato: memoria["c"]. KeyError se não existir."""
-        return self._fatos[nome].valor
+        fato = self._fatos[nome]
+        return fato.valor
 
     def fato(self, nome: str) -> Fato:
         """O objeto Fato completo (com origem e dependências)."""
         return self._fatos[nome]
 
     def get(self, nome: str, padrao: Any = None) -> Any:
+        """Valor de um fato, ou `padrao` se ele não existir."""
         fato = self._fatos.get(nome)
-        return padrao if fato is None else fato.valor
+        if fato is None:
+            return padrao
+        return fato.valor
 
     def __iter__(self) -> Iterator[Fato]:
         return iter(self._fatos.values())
@@ -74,4 +81,7 @@ class MemoriaDeTrabalho:
 
     def como_dict(self) -> dict[str, Any]:
         """Todos os fatos como {nome: valor}. Útil para testes e depuração."""
-        return {nome: fato.valor for nome, fato in self._fatos.items()}
+        valores_por_nome: dict[str, Any] = {}
+        for nome, fato in self._fatos.items():
+            valores_por_nome[nome] = fato.valor
+        return valores_por_nome
