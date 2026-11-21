@@ -1,0 +1,26 @@
+90 dias, 30 repetições por cenário, 9 ingredientes consumidos
+
+Cenário              Política                         Serviço% DiasRupt Compras Emerg. Desp.% ATempo% Cob.(d)
+-------------------------------------------------------------------------------------------------------------
+Normal               Agente (sistema especialista)       100.0      2.7   111.3    2.2    6.7    91.8     5.4
+Normal               if/else com mínimo fixo              99.5     29.5    97.5   29.1   21.8    50.5    15.8
+Normal               Operador (compra quando acaba)       83.4    161.1    75.3   29.9   12.3     0.0     4.2
+
+Pico de demanda      Agente (sistema especialista)        99.2      9.7   117.5    3.5    7.4    86.2     6.0
+Pico de demanda      if/else com mínimo fixo              98.5     33.8   102.7   29.4   19.0    49.1    15.5
+Pico de demanda      Operador (compra quando acaba)       81.4    173.2    78.4   32.2   10.8     0.0     4.1
+
+Fornecedor instável  Agente (sistema especialista)        96.4     54.7   136.6   20.6   10.2    60.6     5.1
+Fornecedor instável  if/else com mínimo fixo              98.4     49.2   112.9   43.2   28.6    35.1    20.2
+Fornecedor instável  Operador (compra quando acaba)       75.5    222.8    65.5   24.3   12.1     0.0     3.8
+
+Sensibilidade: dias de folga do agente (dias em ruptura / desperdício %)
+  Normal               folga 1: 15.0 / 3.7 | folga 2: 2.7 / 6.7 | folga 3: 1.0 / 10.0 | folga 4: 0.5 / 13.6 | folga 5: 0.7 / 15.1
+  Pico de demanda      folga 1: 32.2 / 4.9 | folga 2: 9.7 / 7.4 | folga 3: 3.2 / 10.6 | folga 4: 1.9 / 14.1 | folga 5: 0.9 / 15.3
+  Fornecedor instável  folga 1: 96.7 / 9.1 | folga 2: 54.7 / 10.2 | folga 3: 31.2 / 11.8 | folga 4: 20.3 / 14.6 | folga 5: 16.3 / 15.8
+
+Tempo de execução do agente (avaliar_todos):
+      10 ingredientes:      0.9 ms no total, 0.094 ms por ingrediente
+     100 ingredientes:      9.7 ms no total, 0.097 ms por ingrediente
+    1000 ingredientes:     67.6 ms no total, 0.068 ms por ingrediente
+   10000 ingredientes:    410.9 ms no total, 0.041 ms por ingrediente
