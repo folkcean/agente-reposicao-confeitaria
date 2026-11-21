@@ -1,0 +1,23 @@
+# =============================================================================
+# CI (integração contínua): o GitHub roda os testes sozinho a cada push na
+# main e a cada pull request. O resultado aparece como um ✔ verde ou ✖ vermelho
+# na página do PR, e os detalhes ficam na aba "Actions" do repositório.
+# =============================================================================
+name: testes
+
+# Quando rodar.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest           # uma máquina Linux temporária do GitHub
+    steps:
+      - uses: actions/checkout@v4    # baixa o código do repositório
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"     # a mesma versão do Ubuntu 24.04
+      - run: pip install -r requirements.txt   # instala o pytest
+      - run: pytest                            # roda todos os testes
